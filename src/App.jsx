@@ -1,72 +1,66 @@
 
 import './App.css'
 import './bootstrap.min.css'
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function App() {
+ 
   const [show, setShow] = useState(false);
-  const [preview, setPreview] = useState("")
-  console.log(preview);
 
-  const [details, setDetails] = useState(
-    {
-      name: "",
-      age: "",
-      phone: "",
-      email: "",
-      dob: "",
-      profilepic: ""
-    }
-  )
-  console.log(details);
-
-
+  const [ preview, setPreview] =useState("")
+  
   const handleClose = () => {
-    handleCancel()
+   handleCancel()
     setShow(false);
   }
   const handleShow = () => setShow(true);
-  const handleCancel = () => {
-    setDetails({
-      name: "",
-      age: "",
-      phone: "",
-      email: "",
-      dob: "",
-      profilepic: ""
+  const [details, setDetails] = useState({
+    name:"",
+    age:"",
+    phone:"",
+    dob:"",
+    email:"",
+    profilepic:""
+  })
+  console.log(details);
+  
+const handleCancel = ()=>{
+  setDetails({
+    name:"",
+    age:"",
+    phone:"",
+    dob:"",
+    email:"",
+    profilepic:""
+  })
+  setPreview("")
+}
 
-    })
-    setPreview("")
+ const handleFile = (e) => {
+    setDetails({...details,profilepic:e.target.files[0]})
+  
   }
 
-  const handleFile = (e) => {
-    console.log(e);
-    setDetails({ ...details, profilepic: e.target.files[0] })
+  const handleSubmit = ()=>{
+    const {name,age,phone,dob,email,profilepic} = details
 
-
+    if(!name || !age || !phone || !dob || !email || !profilepic){
+      alert(`Fill the form completely`)
+    }else{
+      alert(`Details successfully submitted`)
+      handleClose()
+    }
   }
 
-  const handleSubmit = () => {
-    const { name, age,
-      phone,
-      email,
-      dob,
-      profilepic } = details
-
-      
-  }
-  useEffect(() => {
-    if (details.profilepic) {
+  useEffect(()=>{
+    if(details.profilepic){
       setPreview(URL.createObjectURL(details.profilepic))
     }
 
-  }, [details.profilepic])
 
-
-
+  },[details.profilepic])
   return (
     <>
       <div className='container-fluid'>
@@ -85,16 +79,16 @@ function App() {
               <Modal.Body>
                 <div className='text-center'>
                   <label htmlFor="details">
-                    <input type="file" id='details' onChange={(e) => handleFile(e)} style={{ display: "none" }} />
-                    <img src={preview ? preview : "https://cdn3.iconfinder.com/data/icons/flat-rounded-7/50/617-1024.png"} alt="" className='w-50' />
+                    <input type="file" id='details' onChange={(e)=>handleFile(e)}  style={{ display: "none" }} />
+                    <img src= {preview?preview :"https://cdn3.iconfinder.com/data/icons/flat-rounded-7/50/617-1024.png" } alt="" className='w-50' />
                   </label>
                 </div>
                 <div className='d-flex flex-column justify-content-center align-items-center'>
-                  <input type="text" value={details.name} onChange={(e) => setDetails({ ...details, name: e.target.value })} className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Name' />
-                  <input type="text" value={details.age} onChange={(e) => setDetails({ ...details, age: e.target.value })} className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Age' />
-                  <input type="text" value={details.phone} onChange={(e) => setDetails({ ...details, phone: e.target.value })} className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Phone Number' />
-                  <input type="date" value={details.dob} onChange={(e) => setDetails({ ...details, dob: e.target.value })} className='mt-lg-4 mt-2 rounded-0 form-control w-75 ' placeholder='Date of Birth' />
-                  <input type="email" value={details.email} onChange={(e) => setDetails({ ...details, email: e.target.value })} className='mt-lg-4 mt-2 rounded-0 form-control w-75 ' placeholder='Email id' />
+                  <input type="text" value={details.name} onChange={(e)=>setDetails({...details,name:e.target.value})}  className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Name' />
+                  <input type="text" value={details.age} onChange={(e)=>setDetails({...details,age:e.target.value})} className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Age' />
+                  <input type="text" value={details.phone} onChange={(e)=>setDetails({...details,phone:e.target.value})} className='mt-lg-3 mt-2 rounded-0 form-control w-75 ' placeholder='Phone Number' />
+                  <input type="date" value={details.dob} onChange={(e)=>setDetails({...details,dob:e.target.value})} className='mt-lg-4 mt-2 rounded-0 form-control w-75 ' placeholder='Date of Birth' />
+                  <input type="email" value={details.email} onChange={(e)=>setDetails({...details,email:e.target.value})} className='mt-lg-4 mt-2 rounded-0 form-control w-75 ' placeholder='Email id' />
                 </div>
               </Modal.Body>
               <Modal.Footer className='d-flex justify-content-center gap-5 '>
